@@ -1,0 +1,17 @@
+.limit-container {
+    text-align: center;
+    margin-top: 100px;
+    font-family: Arial;
+    h1 {
+        color: red;
+        font-size: 32px;
+    }
+    button {
+        padding: 12px 25px;
+        background: black;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+}

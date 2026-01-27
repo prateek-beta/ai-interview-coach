@@ -1,0 +1,41 @@
+<div class="login-container">
+
+    <div class="login-card">
+
+        <h2>Login</h2>
+
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+            <!-- EMAIL -->
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" formControlName="email" placeholder="example@gmail.com">
+
+                <small *ngIf="f.email.touched && f.email.invalid">
+          Invalid Gmail format (a-zA-Z0-9@gmail.com)
+        </small>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" formControlName="password" placeholder="Enter password">
+
+                <small *ngIf="f.password.touched && f.password.invalid">
+          Must be 12 chars, uppercase, lowercase, number & special character
+        </small>
+            </div>
+
+            <!-- LOGIN BUTTON -->
+            <button type="submit" [disabled]="loginForm.invalid">
+        Login
+      </button>
+
+        </form>
+
+        <p class="register-link">
+            Don't have an account? <a routerLink="/register">Register here</a>
+        </p>
+
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<nav class="navbar">
+    <div class="nav-container">
+
+        <div class="logo">
+            AI Interview Coach
+        </div>
+
+        <div class="nav-links">
+            <!-- <a routerLink="/">Home</a> -->
+            <a (click)="home()">Home</a>
+            <!-- <a routerLink="/interview">Mock Interview</a> -->
+            <a (click)="interview()">Mock Interview</a>
+            <!-- <a routerLink="/login">Login</a> -->
+            <a (click)="loginnav()">Login</a>
+            <!-- <a routerLink="/register" class="btn-signup">Sign Up</a> -->
+            <a (click)="register()">Sign Up</a>
+        </div>
+
+        <!-- If logged in -->
+        <div *ngIf="isLoggedIn" class="user-menu">
+
+            <div class="avatar" (click)="showMenu = !showMenu">
+                {{ userName[0] | uppercase }}
+            </div>
+
+            <div class="dropdown" *ngIf="showMenu">
+                <p>{{ userName }}</p>
+                <button (click)="logout()">Logout</button>
+            </div>
+
+        </div>
+
+    </div>
+</nav>
