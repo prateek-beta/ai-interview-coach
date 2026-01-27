@@ -1,0 +1,58 @@
+<div class="register-container">
+    <div class="register-card">
+
+        <h2>Create Your Account</h2>
+
+        <form [formGroup]="registerForm" (ngSubmit)="register()">
+
+            <!-- EMAIL -->
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" formControlName="email" placeholder="example@gmail.com">
+
+                <small *ngIf="f.email.touched && f.email.invalid">
+          Invalid Gmail format (a-zA-Z0-9@gmail.com)
+        </small>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" formControlName="password">
+
+                <small *ngIf="f.password.touched && f.password.invalid">
+          Must be 12 chars, uppercase, lowercase, number & special character
+        </small>
+            </div>
+
+            <!-- MOBILE + COUNTRY CODE -->
+            <div class="form-group mobile-group">
+                <label>Mobile Number</label>
+                <select formControlName="countryCode">
+          <option value="+91">🇮🇳 India (+91)</option>
+          <option value="+63">🇺🇸 USA (+63)</option>
+          <option value="+71">🇳🇵 Nepal (+71)</option>
+        </select>
+
+                <input type="text" formControlName="mobile" placeholder="9999999999">
+            </div>
+
+            <small *ngIf="f.mobile.touched && f.mobile.invalid">
+        Mobile must be 10 digits
+      </small>
+
+            <!-- COUNTRY -->
+            <div class="form-group">
+                <label>Country</label>
+                <input type="text" formControlName="country" placeholder="India">
+            </div>
+
+            <!-- REGISTER BUTTON -->
+            <button type="submit" [disabled]="registerForm.invalid">
+        Register
+      </button>
+
+        </form>
+
+    </div>
+</div>

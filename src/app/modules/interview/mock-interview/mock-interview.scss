@@ -1,0 +1,21 @@
+.interview-container {
+    max-width: 800px;
+    margin: 60px auto;
+}
+
+.question-box {
+    background: #eff0f3;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #2563eb;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+}

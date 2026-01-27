@@ -1,0 +1,130 @@
+.schedule-container {
+    display: flex;
+    gap: 25px;
+    padding: 40px;
+    background: #0b0f1a;
+    color: white;
+    min-height: 100vh;
+    font-family: Inter, sans-serif;
+}
+
+
+/* LEFT PANEL */
+
+.left-panel {
+    width: 260px;
+    background: #111827;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.summary {
+    margin-top: 20px;
+    background: #1f2937;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+
+/* CALENDAR */
+
+.calendar-panel {
+    flex: 1;
+}
+
+select {
+    padding: 10px;
+    background: #1f2937;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.calendar-grid button {
+    padding: 12px;
+    background: #1f2937;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}
+
+.calendar-grid button.active {
+    background: white;
+    color: black;
+}
+
+
+/* TIME PANEL */
+
+.time-panel {
+    width: 220px;
+}
+
+.time-panel button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: #1f2937;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}
+
+.time-panel button.active {
+    background: white;
+    color: black;
+}
+
+.continue-btn {
+    background: #2563eb;
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    width: 100%;
+    border: none;
+    margin-top: 10px;
+}
+
+
+/* USER FORM */
+
+.user-form {
+    position: fixed;
+    right: 40px;
+    top: 100px;
+    background: #111827;
+    padding: 25px;
+    border-radius: 14px;
+    width: 300px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+}
+
+.user-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    background: #1f2937;
+    border: none;
+    border-radius: 8px;
+    color: white;
+}
+
+.confirm-btn {
+    background: #22c55e;
+    color: black;
+    padding: 12px;
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+}
