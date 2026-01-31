@@ -9,7 +9,15 @@
     <!-- Resume Upload -->
     <div class="resume-card">
         <h3>Upload Your Resume</h3>
-        <input type="file" (change)="onResumeUpload($event)" accept="application/pdf">
+
+        <div *ngIf="!resumePath">
+            <input type="file" (change)="onResumeUpload($event)" accept="application/pdf">
+        </div>
+
+        <div *ngIf="resumePath" class="resume-success">
+            ✅ Resume Uploaded
+            <button class="btn-ai" (click)="confirmInterview()">Take AI Interview</button>
+        </div>
     </div>
 
     <!-- Stats Cards -->

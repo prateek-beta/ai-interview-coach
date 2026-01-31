@@ -4,6 +4,9 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ResumeService } from '../../../services/resume.service';
+import { ScheduleService } from '../../../services/schedule.service';
+
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -14,11 +17,17 @@ import { ResumeService } from '../../../services/resume.service';
 })
 export class Dashboard implements OnInit {
   //user: any;
+  resumePath: string | null = null;
+  showInterviewButton = false;
 
-  constructor(private resumeService: ResumeService) {}
+  constructor(private resumeService: ResumeService, private service: ScheduleService, private router: Router) { }
+
 
   userEmail = localStorage.getItem("email") || "";
   userName = "";
+
+  showForm = false;
+
 
   stats = {
     totalInterviews: 0,
@@ -33,6 +42,7 @@ export class Dashboard implements OnInit {
 
   ngOnInit() {
     this.extractName();
+    this.loadResume();
   }
 
   extractName() {
@@ -41,30 +51,44 @@ export class Dashboard implements OnInit {
 
   // Resume Upload
   onResumeUpload(event: any) {
-  const file = event.target.files[0];
+    const file = event.target.files[0];
 
-  if (!file || file.type !== "application/pdf") {
-    alert("Only PDF allowed!");
-    return;
+    if (!file || file.type !== "application/pdf") {
+      alert("Only PDF allowed!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("resume", file);
+    formData.append("name", this.userName);
+    formData.append("email", this.userEmail);
+
+    this.resumeService.uploadResume(formData).subscribe({
+      next: (res: any) => {
+        alert("Resume Uploaded Successfully");
+        this.loadResume();
+        console.log("Upload Success:", res);
+      },
+      error: (err) => {
+        console.error("Upload Error:", err);
+        alert("Resume upload failed");
+      }
+    });
   }
 
-  const formData = new FormData();
-  formData.append("resume", file);
-  formData.append("name", this.userName);
-  formData.append("email", this.userEmail);
+  loadResume() {
+    this.resumeService.getResume().subscribe((res: any) => {
+      this.resumePath = res.resume;
 
-  this.resumeService.uploadResume(formData).subscribe({
-    next: (res: any) => {
-      alert("Resume Uploaded Successfully");
-      console.log("Upload Success:", res);
-    },
-    error: (err) => {
-      console.error("Upload Error:", err);
-      alert("Resume upload failed");
-    }
-  });
-}
+      if (this.resumePath) {
+        this.showInterviewButton = true;
+      }
+    });
+  }
 
+  confirmInterview() {
+    this.router.navigate(['/loggedSchedule']);
+  }
 
   // TODO Feature
   addTask() {

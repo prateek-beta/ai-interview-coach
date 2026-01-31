@@ -8,6 +8,7 @@ import { Report } from './modules/feedback/report/report';
 import { Schedule } from './pages/schedule/schedule';
 import { FreeTrialLimit } from './modules/interview/free-trial-limit/free-trial-limit';
 import { Dashboard } from './modules/dashboard/dashboard/dashboard';
+import { loggedSchedule } from './pages/loggedSchedule/loggedSchedule';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -17,7 +18,8 @@ export const routes: Routes = [
   { path: 'report', component: Report },
   { path: 'schedule', component: Schedule },
   { path: 'free-trial-limit', component: FreeTrialLimit },
-  { path: 'dashboard', component: Dashboard }
+  { path: 'dashboard', component: Dashboard },
+  { path: 'loggedSchedule', component: loggedSchedule }
 ];
 
 @NgModule({

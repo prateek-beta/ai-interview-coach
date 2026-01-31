@@ -39,8 +39,8 @@ export class Navbar {
   }
 
   logout() {
-    localStorage.clear();
     this.router.navigate(['/']);
+    localStorage.clear();
     window.location.reload();
   }
 

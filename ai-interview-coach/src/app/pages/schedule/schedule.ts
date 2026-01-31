@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrl: './schedule.scss',
 })
 export class Schedule implements OnInit {
-  constructor(private service: ScheduleService, private router: Router) {}
+  constructor(private service: ScheduleService, private router: Router) { }
 
   months: Date[] = [];
   dates: Date[] = [];
@@ -83,38 +83,39 @@ export class Schedule implements OnInit {
     this.selectedTime = time;
   }
 
-  
+
 
   confirmInterview() {
-  if (!this.selectedDate || !this.selectedTime) {
-    alert("Please select both date and time");
-    return;
-  }
-
-  const formData = {
-    name: this.user.name,
-    email: this.user.email,
-    mobile: this.user.phone,
-    country: this.user.country,
-    date: this.selectedDate.toISOString().split('T')[0],
-    time: this.selectedTime
-  };
-
-  this.service.scheduleInterview(formData).subscribe({
-    next: () => {
-      alert("Interview Scheduled Successfully");
-    },
-    error: (err) => {
-      if (err.status === 403) {
-        this.router.navigate(['/free-trial-limit']);
-      } else {
-        alert("Server Error. Try again.");
-      }
+    if (!this.selectedDate || !this.selectedTime) {
+      alert("Please select both date and time");
+      return;
     }
-  });
-}
+
+    const formData = {
+      name: this.user.name,
+      email: this.user.email,
+      mobile: this.user.phone,
+      country: this.user.country,
+      date: this.selectedDate.toISOString().split('T')[0],
+      time: this.selectedTime
+    };
+
+    this.service.scheduleInterview(formData).subscribe({
+      next: () => {
+        alert("Interview Scheduled Successfully");
+      },
+      error: (err) => {
+        if (err.status === 403) {
+          this.router.navigate(['/free-trial-limit']);
+        } else {
+          alert("Server Error. Try again.");
+        }
+      }
+    });
 
 
+  }
+  
 }
 
 
