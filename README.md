@@ -57,3 +57,9 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## AI-enabled interview flow assets
+
+- Functional UI flow for schedule -> interview -> report is implemented in Angular components.
+- MySQL schema script is available at `database/mysql/ai_interview_schema.sql`.
+- Process notes for Step 4 to Step 9 are documented in `docs/ai-enabled-flow.md`.
