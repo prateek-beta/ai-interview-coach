@@ -1,68 +1,55 @@
 <div class="schedule-container">
+  <div class="left-panel">
+    <h2>30 Min AI Mock Interview</h2>
+    <p>📍 Google Meet</p>
+    <p>🌏 Timezone: Asia/Kolkata</p>
 
-    <!-- LEFT INFO PANEL -->
-    <div class="left-panel">
-        <h2>30 Min AI Mock Interview</h2>
-        <p>📍 Google Meet</p>
-        <p>🌏 Timezone: Asia/Kolkata</p>
-
-        <div *ngIf="selectedDate !== null && selectedTime !== null" class="summary">
-            <p><b>Selected:</b></p>
-            <p>{{ selectedDate | date:'dd MMM yyyy' }} - {{ selectedTime }}</p>
-            <button (click)="showForm=false">Change Date/Time</button>
-        </div>
+    <div *ngIf="selectedDate !== null && selectedTime !== null" class="summary">
+      <p><b>Selected:</b></p>
+      <p>{{ selectedDate | date:'dd MMM yyyy' }} - {{ selectedTime }}</p>
+      <button (click)="showForm=false">Change Date/Time</button>
     </div>
 
+    <div *ngIf="interviewScheduled" class="summary">
+      <p><b>Step 4 complete:</b> Interview scheduled.</p>
+      <a [href]="calendarEventUrl" target="_blank" rel="noopener">Add event to Google Calendar</a>
+      <br />
+      <button class="continue-btn" (click)="startInterview()">Take AI Interview</button>
+    </div>
+  </div>
 
-    <!-- CALENDAR PANEL -->
-    <div class="calendar-panel">
-
-        <h3>Select Month</h3>
-        <select (change)="onMonthChange($event)">
-      <option *ngFor="let m of months">
-        {{ m | date:'MMMM yyyy' }}
-      </option>
+  <div class="calendar-panel">
+    <h3>Select Month</h3>
+    <select (change)="onMonthChange($event)">
+      <option *ngFor="let m of months">{{ m | date:'MMMM yyyy' }}</option>
     </select>
 
-        <h3>Select Date</h3>
-        <div class="calendar-grid">
-            <button *ngFor="let d of dates" (click)="selectDate(d)" [class.active]="d === selectedDate">
+    <h3>Select Date</h3>
+    <div class="calendar-grid">
+      <button *ngFor="let d of dates" (click)="selectDate(d)" [class.active]="d === selectedDate">
         {{ d | date:'dd' }}
       </button>
-        </div>
-
     </div>
+  </div>
 
-
-    <!-- TIME PANEL -->
-    <div class="time-panel">
-
-        <h3>Select Time</h3>
-        <button *ngFor="let time of timeSlots" (click)="selectTime(time)" [class.active]="time === selectedTime">
+  <div class="time-panel">
+    <h3>Select Time</h3>
+    <button *ngFor="let time of timeSlots" (click)="selectTime(time)" [class.active]="time === selectedTime">
       {{ time }}
     </button>
 
-        <button *ngIf="selectedTime" class="continue-btn" (click)="showForm = true">
-      Continue →
-    </button>
+    <button *ngIf="selectedTime" class="continue-btn" (click)="showForm = true">Continue →</button>
+  </div>
 
-    </div>
+  <div *ngIf="showForm" class="user-form">
+    <h3>Enter Your Details</h3>
 
+    <input [(ngModel)]="user.name" placeholder="Full Name">
+    <input [(ngModel)]="user.email" placeholder="Email">
+    <input [(ngModel)]="user.phone" placeholder="Phone Number">
+    <input [(ngModel)]="user.country" placeholder="Country">
+    <input [(ngModel)]="user.resumeSkills" placeholder="Resume Skills (comma separated)">
 
-    <!-- USER FORM -->
-    <div *ngIf="showForm" class="user-form">
-
-        <h3>Enter Your Details</h3>
-
-        <input [(ngModel)]="user.name" placeholder="Full Name">
-        <input [(ngModel)]="user.email" placeholder="Email">
-        <input [(ngModel)]="user.phone" placeholder="Phone Number">
-        <input [(ngModel)]="user.country" placeholder="Country">
-
-        <button class="confirm-btn" (click)="confirmInterview()">
-      Confirm Interview
-    </button>
-
-    </div>
-
+    <button class="confirm-btn" (click)="confirmInterview()">Confirm Interview</button>
+  </div>
 </div>

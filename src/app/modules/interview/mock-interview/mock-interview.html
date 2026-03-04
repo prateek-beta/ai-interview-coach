@@ -1,16 +1,28 @@
 <div class="glass-card">
-    <div class="p-10">
-        <h2 class="text-2xl font-bold">AI Interview Session</h2>
+  <div class="p-10">
+    <h2 class="text-2xl font-bold">AI Interview Session</h2>
+    <p><b>Candidate:</b> {{ candidateName }}</p>
+    <p><b>Session:</b> {{ sessionId }} | <b>Status:</b> IN_PROGRESS</p>
 
-        <div class="bg-gray-100 p-4 mt-4 rounded">
-            <p class="font-semibold">AI Question:</p>
-            <p>Explain Angular Dependency Injection.</p>
-        </div>
-
-        <textarea class="border w-full p-3 mt-4" rows="5" placeholder="Type your answer..."></textarea>
-
-        <button class="bg-green-600 text-white px-4 py-2 mt-3 rounded">
-    Submit Answer
-  </button>
+    <div *ngIf="questions[currentQuestionIndex]" class="bg-gray-100 p-4 mt-4 rounded">
+      <p class="font-semibold">Step 6 - AI Technical Question {{ currentQuestionIndex + 1 }}/{{ questions.length }}</p>
+      <p>{{ questions[currentQuestionIndex].questionText }}</p>
+      <small>Type: {{ questions[currentQuestionIndex].questionType }} | Difficulty: {{ questions[currentQuestionIndex].difficulty }}</small>
+      <p><b>Auto move in:</b> {{ timer }}s</p>
     </div>
+
+    <div class="mt-4">
+      <label><input type="radio" name="inputType" [(ngModel)]="inputType" value="TEXT"> Text</label>
+      <label class="ml-2"><input type="radio" name="inputType" [(ngModel)]="inputType" value="VOICE"> Voice (simulated STT)</label>
+      <label class="ml-2"><input type="radio" name="inputType" [(ngModel)]="inputType" value="CODE"> Coding Editor</label>
+    </div>
+
+    <textarea *ngIf="inputType !== 'CODE'" class="border w-full p-3 mt-4" rows="5" placeholder="Type your answer..." [(ngModel)]="answerText"></textarea>
+
+    <textarea *ngIf="inputType === 'CODE'" class="border w-full p-3 mt-4" rows="8" placeholder="Write and submit code..." [(ngModel)]="codeAnswer"></textarea>
+
+    <button class="bg-green-600 text-white px-4 py-2 mt-3 rounded" (click)="submitCurrentAnswer()">
+      Submit & Next
+    </button>
+  </div>
 </div>

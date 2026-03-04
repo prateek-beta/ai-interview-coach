@@ -1,9 +1,45 @@
-<div class="p-10">
-    <h2 class="text-2xl font-bold">Interview Feedback</h2>
+<div class="p-10" *ngIf="report && session; else noReport">
+  <h2 class="text-2xl font-bold">Interview Feedback Dashboard</h2>
+  <p><b>Candidate:</b> {{ session.candidateName }} | <b>Session:</b> {{ session.sessionId }} | <b>Status:</b> {{ session.status }}</p>
 
-    <div class="mt-4 bg-white shadow p-4 rounded">
-        <p>Technical Score: 8/10</p>
-        <p>Communication Score: 6/10</p>
-        <p>Confidence Score: 7/10</p>
-    </div>
+  <div class="mt-4 bg-white shadow p-4 rounded">
+    <p>Overall Score: {{ report.overallScore }}%</p>
+    <p>Integrity Score: {{ report.integrityScore }}%</p>
+  </div>
+
+  <h3 class="mt-4 font-bold">Questions with Submitted Answers/Code</h3>
+  <div class="mt-2" *ngFor="let q of session.questions; let i = index">
+    <p><b>Q{{ i + 1 }}:</b> {{ q.questionText }}</p>
+    <p><b>Answer:</b> {{ session.answers[i]?.answerText || 'No answer submitted' }}</p>
+  </div>
+
+  <h3 class="mt-4 font-bold">Detailed AI Feedback</h3>
+  <div class="mt-2" *ngFor="let item of report.detailedFeedback">
+    <p><b>Question:</b> {{ item.questionId }}</p>
+    <p>{{ item.feedback }}</p>
+  </div>
+
+  <h3 class="mt-4 font-bold">Weak Areas</h3>
+  <ul>
+    <li *ngFor="let weak of report.weaknesses">{{ weak }}</li>
+  </ul>
+
+  <h3 class="mt-4 font-bold">Integrity / Cheating Flags</h3>
+  <ul>
+    <li *ngFor="let flag of session.integritySignals">{{ flag.eventType }} - {{ flag.severity }} - {{ flag.note }}</li>
+  </ul>
+
+  <h3 class="mt-4 font-bold">To-Do List for Improvement</h3>
+  <ul>
+    <li *ngFor="let todo of report.todoList">{{ todo }}</li>
+  </ul>
+
+  <a routerLink="/schedule">Schedule another interview</a>
 </div>
+
+<ng-template #noReport>
+  <div class="p-10">
+    <h2>No interview report found.</h2>
+    <a routerLink="/schedule">Schedule Interview</a>
+  </div>
+</ng-template>

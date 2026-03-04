@@ -2,7 +2,6 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { formatDate } from '@angular/common';
 import { ScheduleService } from '../../services/schedule.service';
 import { Router } from '@angular/router';
 
@@ -23,25 +22,23 @@ export class Schedule implements OnInit {
   selectedTime: string | null = null;
 
   showForm = false;
+  interviewScheduled = false;
+  calendarEventUrl = '';
 
-  timeSlots = [
-    '09:00 AM', '10:00 AM', '11:00 AM',
-    '02:00 PM', '04:00 PM', '06:00 PM',
-    '08:00 PM'
-  ];
+  timeSlots = ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM', '04:00 PM', '06:00 PM', '08:00 PM'];
 
   user = {
     name: '',
     email: '',
     phone: '',
-    country: ''
+    country: '',
+    resumeSkills: 'Angular, TypeScript, SQL'
   };
 
   ngOnInit() {
     this.generateMonths();
   }
 
-  // Generate next 6 months
   generateMonths() {
     const today = new Date();
     for (let i = 0; i < 6; i++) {
@@ -54,6 +51,7 @@ export class Schedule implements OnInit {
     this.selectedMonth = month;
     this.generateDatesForMonth(month);
   }
+
   onMonthChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     const selectedIndex = target.selectedIndex;
@@ -83,39 +81,72 @@ export class Schedule implements OnInit {
     this.selectedTime = time;
   }
 
-  
-
   confirmInterview() {
-  if (!this.selectedDate || !this.selectedTime) {
-    alert("Please select both date and time");
-    return;
+    if (!this.selectedDate || !this.selectedTime) {
+      alert('Please select both date and time');
+      return;
+    }
+
+    const formData = {
+      name: this.user.name,
+      email: this.user.email,
+      mobile: this.user.phone,
+      country: this.user.country,
+      resumeSkills: this.user.resumeSkills,
+      date: this.selectedDate.toISOString().split('T')[0],
+      time: this.selectedTime
+    };
+
+    this.service.scheduleInterview(formData).subscribe({
+      next: () => {
+        this.interviewScheduled = true;
+        this.calendarEventUrl = this.buildGoogleCalendarLink();
+        localStorage.setItem('candidateProfile', JSON.stringify({
+          candidateId: this.user.email || `guest-${Date.now()}`,
+          candidateName: this.user.name,
+          resumeSkills: this.user.resumeSkills.split(',').map((skill) => skill.trim()).filter(Boolean)
+        }));
+        alert('Interview Scheduled Successfully. Add this event to your calendar and click Take AI Interview.');
+      },
+      error: (err) => {
+        if (err.status === 403) {
+          this.router.navigate(['/free-trial-limit']);
+        } else {
+          alert('Server Error. Try again.');
+        }
+      }
+    });
   }
 
-  const formData = {
-    name: this.user.name,
-    email: this.user.email,
-    mobile: this.user.phone,
-    country: this.user.country,
-    date: this.selectedDate.toISOString().split('T')[0],
-    time: this.selectedTime
-  };
+  startInterview() {
+    this.router.navigate(['/interview']);
+  }
 
-  this.service.scheduleInterview(formData).subscribe({
-    next: () => {
-      alert("Interview Scheduled Successfully");
-    },
-    error: (err) => {
-      if (err.status === 403) {
-        this.router.navigate(['/free-trial-limit']);
-      } else {
-        alert("Server Error. Try again.");
-      }
-    }
-  });
+  private buildGoogleCalendarLink(): string {
+    if (!this.selectedDate || !this.selectedTime) return '';
+
+    const [time, meridiem] = this.selectedTime.split(' ');
+    const [hourStr, minuteStr] = time.split(':');
+    let hour = Number(hourStr);
+    if (meridiem === 'PM' && hour < 12) hour += 12;
+    if (meridiem === 'AM' && hour === 12) hour = 0;
+
+    const start = new Date(this.selectedDate);
+    start.setHours(hour, Number(minuteStr), 0, 0);
+
+    const end = new Date(start);
+    end.setMinutes(end.getMinutes() + 30);
+
+    const format = (date: Date) => date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+    const params = new URLSearchParams({
+      action: 'TEMPLATE',
+      text: 'AI Mock Interview Session',
+      details: 'AI interview scheduled from AI Interview Coach platform',
+      location: 'Online',
+      dates: `${format(start)}/${format(end)}`
+    });
+
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+  }
 }
-
-
-}
-
-
-
